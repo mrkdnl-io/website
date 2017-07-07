@@ -6,3 +6,8 @@
  :initialize-db
  (fn  [_ _]
    db/default-db))
+
+(re-frame/reg-event-db
+ :update-route
+ (fn  [db [_ route]]
+   (assoc db :route route)))

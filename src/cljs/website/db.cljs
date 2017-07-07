@@ -1,4 +1,5 @@
 (ns website.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:route {:current-page :index
+           :route-params {:item-id nil}}})

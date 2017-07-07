@@ -3,7 +3,9 @@
                  [org.clojure/clojurescript "1.9.229"]
                  [reagent "0.6.0"]
                  [re-frame "0.9.4"]
-                 [re-frisk "0.4.5"]]
+                 [re-frisk "0.4.5"]
+                 [bidi "2.1.1"]
+                 [venantius/accountant "0.2.0"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]]
 
