@@ -5,9 +5,15 @@
                  [re-frame "0.9.4"]
                  [re-frisk "0.4.5"]
                  [bidi "2.1.1"]
-                 [venantius/accountant "0.2.0"]]
+                 [venantius/accountant "0.2.0"]
+                 [ring "1.6.1"]]
 
-  :plugins [[lein-cljsbuild "1.1.4"]]
+  :plugins [[lein-cljsbuild "1.1.4"]
+            [lein-ring "0.12.0"]]
+
+  :ring {:handler website.core/handler
+         :uberwar-name "website.war"
+         :resources-path "resources/public"}
 
   :min-lein-version "2.5.3"
 
@@ -15,12 +21,12 @@
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
-  :figwheel {:css-dirs ["resources/public/css"]}
+  :figwheel {:css-dirs ["resources/public/css"]
+             :ring-handler website.core/dev-handler}
 
   :profiles
   {:dev
    {:dependencies [[binaryage/devtools "0.8.2"]]
-
     :plugins      [[lein-figwheel "0.5.9"]]
     }}
 
