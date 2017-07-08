@@ -6,67 +6,63 @@
 
 (defmulti page-contents identity)
 
+(defn index-panels [header content]
+  [:div.col-xs-4
+   [:div.panel.panel-default
+    [:div.panel-heading
+     [:h3.panel-title header]]
+    [:div.panel-body content]]])
+
 (defmethod page-contents :index []
   (fn []
-    [:span
-     [:h1 "Routing example: Index"]
-     [:ul
-      [:li [:a {:href (path-for app-routes :section-a) } "Section A"]]
-      [:li [:a {:href (path-for app-routes :section-b) } "Section B"]]
-      [:li [:a {:href (path-for app-routes :missing-route) } "Missing-route"]]
-      [:li [:a {:href "/borken/link" } "Borken link"]]]]))
+    [:div.container-fluid
+      [:div.jumbotron "This is the main section"]
+      [:div.row
+        [index-panels "Services" "This is the service section"]
+        [index-panels "Demos" "This is the demos section"]
+        [index-panels "About Us" "This is the about us section"]]]))
 
-(defmethod page-contents :section-a []
+(defmethod page-contents :services []
   (fn []
-    [:span
-     [:h1 "Routing example: Section A"]
-     [:ul (map (fn [item-id]
-                 [:li {:key (str "item-" item-id)}
-                  [:a {:href (path-for app-routes :a-item :item-id item-id)} "Item: " item-id]])
-               (range 1 6))]]))
+    [:div.container
+     [:h1 "Services"]]))
 
-(defmethod page-contents :a-item []
+(defmethod page-contents :demos []
   (fn []
-    (let [routing-data @(subscribe [:route])
-          item (get-in routing-data [:route-params :item-id])]
-      [:span
-       [:h1 (str "Routing example: Section A, item " item)]
-       [:p [:a {:href (path-for app-routes :section-a)} "Back to Section A"]]])))
+    [:div.container
+     [:h1 "Demos"]]))
 
-(defmethod page-contents :section-b []
-  (fn [] [:span
-          [:h1 "Routing example: Section B"]]))
-
-(defmethod page-contents :four-o-four []
-  "Non-existing routes go here"
+(defmethod page-contents :about-us []
   (fn []
-    [:span
-     [:h1 "404: It is not here"]
-     [:pre.verse
-      "What you are looking for,
-I do not have.
-How could I have,
-what does not exist?"]]))
+    [:div.container
+     [:h1 "About Us"]]))
 
 (defmethod page-contents :default []
-  "Configured routes, missing an implementation, go here"
   (fn []
-    [:span
+    [:div.container
      [:h1 "404: My bad"]
      [:pre.verse
       "This page should be here,
 but I never created it."]]))
 
+(defn nav-bar []
+  [:nav.navbar.navbar-default
+   [:div.container-fluid
+    [:div.navbar-header
+     [:button.navbar-toggle {:type "button" :data-toggle "collapse" :data-target "#myNavbar"}
+      [:span.icon-bar]
+      [:span.icon-bar]
+      [:span.icon-bar]]
+      [:a.navbar-brand {:href (path-for app-routes :index) } "mrkdnl.io"]]
+    [:div#myNavbar.collapse.navbar-collapse
+      [:ul.nav.navbar-nav
+      [:li [:a {:href (path-for app-routes :services) } "services"]]
+      [:li [:a {:href (path-for app-routes :demos) } "demos"]]
+      [:li [:a {:href (path-for app-routes :about-us) } "about us"]]]]]])
+
 (defn page []
   (fn []
     (let [page (:current-page @(subscribe [:route]))]
       [:div
-       [:p [:a {:href (path-for app-routes :index) } "Go home"]]
-       [:hr]
-       ^{:key page} [page-contents page]
-       [:hr]
-       [:p "(Using "
-        [:a {:href "https://reagent-project.github.io/"} "Reagent"] ", "
-        [:a {:href "https://github.com/juxt/bidi"} "Bidi"] " & "
-        [:a {:href "https://github.com/venantius/accountant"} "Accountant"]
-        ")"]])))
+       [nav-bar]
+       ^{:key page} [page-contents page]])))
