@@ -11,3 +11,8 @@
  :update-route
  (fn  [db [_ route]]
    (assoc db :route route)))
+
+(re-frame/reg-event-db
+ :update-scroll-y
+ (fn  [db [_ scroll-y]]
+   (assoc db :scroll-y scroll-y)))

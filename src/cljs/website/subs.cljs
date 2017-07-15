@@ -6,3 +6,8 @@
  :route
  (fn [db]
    (:route db)))
+
+(re-frame/reg-sub
+ :scroll-y
+ (fn [db]
+   (:scroll-y db)))
